@@ -3,13 +3,20 @@ package com.vmaron.tvinsider.Activities;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.vmaron.tvinsider.Data.TvShowData;
+import com.vmaron.tvinsider.Data.TvShowListAsyncResponse;
+import com.vmaron.tvinsider.Model.TvShow;
 import com.vmaron.tvinsider.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -32,6 +39,8 @@ public class MainActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
+
+        getTvShows();
     }
 
     @Override
@@ -57,5 +66,19 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private List<TvShow> getTvShows()
+    {
+        final ArrayList<TvShow> tvShows = new ArrayList<TvShow>();
+        new TvShowData().getTvShows(new TvShowListAsyncResponse()
+        {
+            @Override
+            public void processFinished(ArrayList<TvShow> response)
+            {
+                tvShows.addAll(response);
+            }
+        });
+        return tvShows;
     }
 }
