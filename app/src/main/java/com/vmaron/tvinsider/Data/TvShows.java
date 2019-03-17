@@ -11,6 +11,7 @@ import com.vmaron.tvinsider.Data.Request.TvShowSearchRequest;
 import com.vmaron.tvinsider.Data.Response.TvShowSearchResponse;
 import com.vmaron.tvinsider.Model.TvShow;
 import com.vmaron.tvinsider.Model.TvShowPagedResults;
+import com.vmaron.tvinsider.Util.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,7 +21,7 @@ public class TvShows
 {
     public void search(final TvShowSearchRequest request, final TvShowSearchResponse callBack)
     {
-        String url = "https://api.themoviedb.org/3/search/tv?api_key=3c0ec1ff44dd471c3a1fdb6a6ce6ba7f&language=en-US" +
+        String url =  Constants.API_URL + "search/tv?" + Constants.API_KEY +
                 "&query=" + request.getQuery() +
                 "&page=" + request.getPage();
 
@@ -41,9 +42,12 @@ public class TvShows
                             for (int i = 0; i < tvShows.length(); i++)
                             {
                                 JSONObject o = tvShows.getJSONObject(i);
+
                                 TvShow show = new TvShow();
                                 show.setId(o.getInt("id"));
                                 show.setName(o.getString("name"));
+                                show.setPoster(Constants.POSTER_URL + o.getString("poster_path"));
+
                                 results.getResults().add(show);
                             }
 

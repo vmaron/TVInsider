@@ -3,25 +3,37 @@ package com.vmaron.tvinsider.Activities;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.android.volley.RequestQueue;
 import com.vmaron.tvinsider.Data.Request.TvShowSearchRequest;
 import com.vmaron.tvinsider.Data.Response.TvShowSearchResponse;
+import com.vmaron.tvinsider.Data.TvShowRecyclerViewAdapter;
 import com.vmaron.tvinsider.Data.TvShows;
 import com.vmaron.tvinsider.Model.TvShow;
 import com.vmaron.tvinsider.Model.TvShowPagedResults;
 import com.vmaron.tvinsider.R;
+import com.vmaron.tvinsider.Util.Prefs;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
 {
+    private RecyclerView recyclerView;
+    private TvShowRecyclerViewAdapter movieRecyclerViewAdapter;
+    private List<TvShow> movieList;
+
+    private AlertDialog.Builder alertDialogBuilder;
+    private AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -42,7 +54,20 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        getTvShows();
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerViewID);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        Prefs prefs = new Prefs(MainActivity.this);
+        String search = prefs.getSearch();
+
+        movieList = new ArrayList<TvShow>();
+
+        getTvShows(search);
+
+        movieRecyclerViewAdapter = new TvShowRecyclerViewAdapter(this, movieList);
+        recyclerView.setAdapter(movieRecyclerViewAdapter);
+        movieRecyclerViewAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -70,17 +95,17 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    private List<TvShow> getTvShows()
+    private void getTvShows(String query)
     {
-        final List<TvShow> tvShows = new ArrayList<TvShow>();
-        new TvShows().search(new TvShowSearchRequest("idol", 1), new TvShowSearchResponse()
+        movieList.clear();
+        new TvShows().search(new TvShowSearchRequest(query, 1), new TvShowSearchResponse()
         {
             @Override
             public void processResponse(TvShowPagedResults results)
             {
-                tvShows.addAll(results.getResults());
+                movieList.addAll(results.getResults());
+                movieRecyclerViewAdapter.notifyDataSetChanged();
             }
         });
-        return tvShows;
     }
 }

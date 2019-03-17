@@ -5,13 +5,16 @@ public class TvShow
     private float id;
     private String url;
     private String name;
-
-
-    // Getter Methods
+    private String poster;
 
     public float getId()
     {
         return id;
+    }
+
+    public void setId(float id)
+    {
+        this.id = id;
     }
 
     public String getUrl()
@@ -19,27 +22,29 @@ public class TvShow
         return url;
     }
 
-    public String getName()
-    {
-        return name;
-    }
-
-
-    // Setter Methods
-
-    public void setId(float id)
-    {
-        this.id = id;
-    }
-
     public void setUrl(String url)
     {
         this.url = url;
     }
 
+    public String getName()
+    {
+        return name;
+    }
+
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    public String getPoster()
+    {
+        return poster;
+    }
+
+    public void setPoster(String poster)
+    {
+        this.poster = poster;
     }
 }
 
