@@ -4,4 +4,5 @@
     <string name="search_text">New Search Term</string>
     <string name="search_hint">eg: Law &amp; Order</string>
     <string name="submit">Submit</string>
+    <string name="year_released">Year Released</string>
 </resources>

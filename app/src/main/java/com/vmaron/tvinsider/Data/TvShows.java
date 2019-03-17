@@ -1,5 +1,6 @@
 package com.vmaron.tvinsider.Data;
 
+import android.net.Uri;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -21,9 +22,11 @@ public class TvShows
 {
     public void search(final TvShowSearchRequest request, final TvShowSearchResponse callBack)
     {
-        String url =  Constants.API_URL + "search/tv?" + Constants.API_KEY +
-                "&query=" + request.getQuery() +
-                "&page=" + request.getPage();
+        String url = Uri.parse(Constants.API_URL + "search/tv?" + Constants.API_KEY)
+                .buildUpon()
+                .appendQueryParameter("query", request.getQuery())
+                .appendQueryParameter("page", String.valueOf(request.getPage()))
+                .build().toString();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url,
                 new Response.Listener<JSONObject>()
@@ -47,6 +50,7 @@ public class TvShows
                                 show.setId(o.getInt("id"));
                                 show.setName(o.getString("name"));
                                 show.setPoster(Constants.POSTER_URL + o.getString("poster_path"));
+                                show.setFirstAirDate(o.getString("first_air_date"));
 
                                 results.getResults().add(show);
                             }

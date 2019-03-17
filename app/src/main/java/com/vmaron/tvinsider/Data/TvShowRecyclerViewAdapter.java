@@ -44,12 +44,22 @@ public class TvShowRecyclerViewAdapter extends RecyclerView.Adapter<TvShowRecycl
         TvShow movie = this.tvShowList.get(position);
         String posterlink = movie.getPoster();
 
-        viewHolder.title.setText(movie.getName());
+        String year = movie.getFirstAirYear();
+        if (year.length() > 0)
+            viewHolder.title.setText(String.format("%s (%s)", movie.getName(), year));
+        else
+            viewHolder.title.setText(movie.getName());
 
         Picasso.with(context)
                 .load(posterlink)
                 .placeholder(R.drawable.tv_icon)
                 .into(viewHolder.poster);
+
+
+        viewHolder.year.setText(new StringBuilder().append(context.getResources().getString(R.string.year_released))
+                .append(": ")
+                .append(year)
+                .toString());
     }
 
     @Override
@@ -62,6 +72,7 @@ public class TvShowRecyclerViewAdapter extends RecyclerView.Adapter<TvShowRecycl
     {
         public TextView title;
         public ImageView poster;
+        public TextView year;
 
         public ViewHolder(@NonNull View itemView, final Context ctx)
         {
@@ -70,6 +81,7 @@ public class TvShowRecyclerViewAdapter extends RecyclerView.Adapter<TvShowRecycl
 
             title = (TextView) itemView.findViewById(R.id.showTitleID);
             poster = (ImageView) itemView.findViewById(R.id.showImageID);
+            year = (TextView) itemView.findViewById(R.id.showReleaseID);
         }
 
         @Override
