@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.android.volley.RequestQueue;
 import com.vmaron.tvinsider.Data.Request.TvShowSearchRequest;
@@ -49,8 +51,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                showInputDialog();
             }
         });
 
@@ -87,12 +88,45 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings)
+        if (id == R.id.new_search)
         {
-            return true;
+            showInputDialog();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showInputDialog()
+    {
+        alertDialogBuilder = new AlertDialog.Builder(this);
+        View view = getLayoutInflater().inflate(R.layout.dialog_view, null);
+        final EditText newSearchEdt = (EditText) view.findViewById(R.id.searchEdt);
+        Button submitButton = (Button) view.findViewById(R.id.submitButton);
+
+        alertDialogBuilder.setView(view);
+        dialog = alertDialogBuilder.create();
+        dialog.show();
+
+        submitButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Prefs prefs = new Prefs(MainActivity.this);
+
+                if (!newSearchEdt.getText().toString().isEmpty())
+                {
+
+                    String search = newSearchEdt.getText().toString();
+                    prefs.setSearch(search);
+                    movieList.clear();
+
+                    getTvShows(search);
+
+                }
+                dialog.dismiss();
+            }
+        });
     }
 
     private void getTvShows(String query)

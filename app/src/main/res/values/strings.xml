@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">TV Insider</string>
-    <string name="action_settings">Settings</string>
+    <string name="search_title">Search</string>
+    <string name="search_text">New Search Term</string>
+    <string name="search_hint">eg: Law &amp; Order</string>
+    <string name="submit">Submit</string>
 </resources>
