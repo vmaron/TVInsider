@@ -48,7 +48,7 @@ public class TvShowRecyclerViewAdapter extends RecyclerView.Adapter<TvShowRecycl
 
         Picasso.with(context)
                 .load(posterlink)
-                .placeholder(R.drawable.ic_tv_24px)
+                .placeholder(R.drawable.tv_icon)
                 .into(viewHolder.poster);
     }
 
