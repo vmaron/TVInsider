@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.vmaron.tvinsider.Data.Request.TvShowSearchRequest;
@@ -37,6 +38,13 @@ public class MainActivity extends AppCompatActivity
     private AlertDialog.Builder alertDialogBuilder;
     private AlertDialog dialog;
 
+    private LinearLayoutManager layoutManager;
+    private boolean isLoading;
+    private boolean isLastPage;
+    private int pageSize;
+    private int page = 1;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -57,17 +65,47 @@ public class MainActivity extends AppCompatActivity
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerViewID);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
 
-        Prefs prefs = new Prefs(MainActivity.this);
+        final Prefs prefs = new Prefs(MainActivity.this);
         String search = prefs.getSearch();
 
         movieList = new ArrayList<TvShow>();
 
-        getTvShows(search);
+        getTvShows(search, page);
 
         movieRecyclerViewAdapter = new TvShowRecyclerViewAdapter(this, movieList);
         recyclerView.setAdapter(movieRecyclerViewAdapter);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
+        {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState)
+            {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy)
+            {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+
+                if (!isLoading && !isLastPage) {
+                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                            && firstVisibleItemPosition >= 0
+                            && totalItemCount >= pageSize)
+                    {
+                        String search = prefs.getSearch();
+                        getTvShows(search, page + 1);
+                    }
+                }
+            }
+        });
+
         movieRecyclerViewAdapter.notifyDataSetChanged();
     }
 
@@ -116,29 +154,34 @@ public class MainActivity extends AppCompatActivity
 
                 if (!newSearchEdt.getText().toString().isEmpty())
                 {
-
                     String search = newSearchEdt.getText().toString();
                     prefs.setSearch(search);
                     movieList.clear();
 
-                    getTvShows(search);
-
+                    getTvShows(search, 1);
                 }
                 dialog.dismiss();
             }
         });
     }
 
-    private void getTvShows(String query)
+    private void getTvShows(String query, int pageNum)
     {
-        movieList.clear();
-        new TvShows().search(new TvShowSearchRequest(query, 1), new TvShowSearchResponse()
+        isLoading = true;
+
+        new TvShows().search(new TvShowSearchRequest(query, pageNum), new TvShowSearchResponse()
         {
             @Override
             public void processResponse(TvShowPagedResults results)
             {
                 movieList.addAll(results.getResults());
+                pageSize = results.getResults().size();
+                page = results.getPage();
+                isLastPage = page == results.getTotalPages();
                 movieRecyclerViewAdapter.notifyDataSetChanged();
+                isLoading = false;
+
+                Toast.makeText(getApplicationContext(),"Displaying " + String.valueOf(movieList.size()) + " out of " + results.getTotalResults(), Toast.LENGTH_SHORT).show();
             }
         });
     }
