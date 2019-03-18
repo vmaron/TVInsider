@@ -29,7 +29,7 @@
                 android:id="@+id/showImageID"
                 android:background="@android:color/background_dark"
                 android:layout_width="90dp"
-                android:layout_height="90dp" />
+                android:layout_height="120dp" />
 
             <TextView
                 android:id="@+id/showTitleID"
@@ -42,14 +42,24 @@
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/showReleaseID"
+                android:id="@+id/voteAvgID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/showImageID"
                 android:layout_below="@+id/showTitleID"
                 android:padding="5dp"
                 android:layout_centerHorizontal="true"
-                android:text="Released"/>
+                android:text=""/>
+
+            <TextView
+                android:id="@+id/showOverviewID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/voteAvgID"
+                android:padding="5dp"
+                android:layout_centerHorizontal="true"
+                android:layout_toRightOf="@id/showImageID"
+                android:text=""/>
 
 
 

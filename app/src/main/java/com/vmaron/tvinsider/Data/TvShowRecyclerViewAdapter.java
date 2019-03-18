@@ -1,6 +1,7 @@
 package com.vmaron.tvinsider.Data;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,8 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.vmaron.tvinsider.Activities.ShowDetailActivity;
 import com.vmaron.tvinsider.Model.TvShow;
 import com.vmaron.tvinsider.R;
+import com.vmaron.tvinsider.Util.StringExtension;
 
 import java.util.List;
 
@@ -41,14 +44,14 @@ public class TvShowRecyclerViewAdapter extends RecyclerView.Adapter<TvShowRecycl
     @Override
     public void onBindViewHolder(@NonNull TvShowRecyclerViewAdapter.ViewHolder viewHolder, int position)
     {
-        TvShow movie = this.tvShowList.get(position);
-        String posterlink = movie.getPoster();
+        TvShow tvShow = this.tvShowList.get(position);
+        String posterlink = tvShow.getPoster();
 
-        String year = movie.getFirstAirYear();
+        String year = tvShow.getFirstAirYear();
         if (year.length() > 0)
-            viewHolder.title.setText(String.format("%s (%s)", movie.getName(), year));
+            viewHolder.title.setText(String.format("%s (%s)", tvShow.getName(), year));
         else
-            viewHolder.title.setText(movie.getName());
+            viewHolder.title.setText(tvShow.getName());
 
         Picasso.with(context)
                 .load(posterlink)
@@ -56,10 +59,8 @@ public class TvShowRecyclerViewAdapter extends RecyclerView.Adapter<TvShowRecycl
                 .into(viewHolder.poster);
 
 
-        viewHolder.year.setText(new StringBuilder().append(context.getResources().getString(R.string.year_released))
-                .append(": ")
-                .append(year)
-                .toString());
+        viewHolder.voteAvg.setText(String.format("%d/10", tvShow.getVoteAvg()));
+        viewHolder.overview.setText(StringExtension.truncate(tvShow.getOverview(), 80));
     }
 
     @Override
@@ -72,7 +73,8 @@ public class TvShowRecyclerViewAdapter extends RecyclerView.Adapter<TvShowRecycl
     {
         public TextView title;
         public ImageView poster;
-        public TextView year;
+        public TextView voteAvg;
+        public TextView overview;
 
         public ViewHolder(@NonNull View itemView, final Context ctx)
         {
@@ -81,7 +83,22 @@ public class TvShowRecyclerViewAdapter extends RecyclerView.Adapter<TvShowRecycl
 
             title = (TextView) itemView.findViewById(R.id.showTitleID);
             poster = (ImageView) itemView.findViewById(R.id.showImageID);
-            year = (TextView) itemView.findViewById(R.id.showReleaseID);
+            voteAvg = (TextView) itemView.findViewById(R.id.voteAvgID);
+            overview = (TextView) itemView.findViewById(R.id.showOverviewID);
+
+            itemView.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    TvShow tvShow = tvShowList.get(getAdapterPosition());
+                    Intent intent = new Intent(context, ShowDetailActivity.class);
+                    intent.putExtra("show", tvShow);
+                    context.startActivity(intent);
+
+                    //Toast.makeText(context, "Row Tapped", Toast.LENGTH_LONG).show(); test if working.
+                }
+            });
         }
 
         @Override

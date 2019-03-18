@@ -1,14 +1,37 @@
 package com.vmaron.tvinsider.Model;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class TvShow
+public class TvShow implements Serializable
 {
     private float id;
     private String url;
     private String name;
     private String poster;
+    private int voteAvg;
+    private String overview;
+
+    public int getVoteAvg()
+    {
+        return voteAvg;
+    }
+
+    public void setVoteAvg(int voteAvg)
+    {
+        this.voteAvg = voteAvg;
+    }
+
+    public String getOverview()
+    {
+        return overview;
+    }
+
+    public void setOverview(String overview)
+    {
+        this.overview = overview;
+    }
 
     public String getFirstAirDate()
     {

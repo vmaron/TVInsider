@@ -51,6 +51,8 @@ public class TvShows
                                 show.setName(o.getString("name"));
                                 show.setPoster(Constants.POSTER_URL + o.getString("poster_path"));
                                 show.setFirstAirDate(o.getString("first_air_date"));
+                                show.setVoteAvg(o.getInt("vote_average"));
+                                show.setOverview(o.getString("overview"));
 
                                 results.getResults().add(show);
                             }

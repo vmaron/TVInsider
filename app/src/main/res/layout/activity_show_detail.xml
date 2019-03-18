@@ -7,4 +7,78 @@
     android:layout_height="match_parent"
     tools:context=".Activities.ShowDetailActivity">
 
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardviewDets"
+        android:layout_width="368dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="7dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.046"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent" >
+
+        <RelativeLayout
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <ImageView
+                android:id="@+id/showImageIDDets"
+                android:background="@android:color/black"
+                android:layout_width="90dp"
+                android:layout_height="90dp" />
+
+            <TextView
+                android:id="@+id/showTitleIDDets"
+                android:paddingLeft="5dp"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:text="TV Show Title"
+                android:layout_toRightOf="@id/showImageIDDets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:id="@+id/movieRatingIDDet"
+                android:paddingLeft="5dp"
+                android:layout_below="@id/showTitleIDDets"
+                android:text="Rating:"
+                android:layout_toRightOf="@id/showImageIDDets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+    <RelativeLayout
+        android:id="@+id/relativeView"
+        android:layout_width="368dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/cardview_dark_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardviewDets"
+        app:layout_constraintVertical_bias="0.009">
+
+        <TextView
+            android:id="@+id/plotDet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="Plot:"/>
+
+    </RelativeLayout>
+
 </android.support.constraint.ConstraintLayout>
