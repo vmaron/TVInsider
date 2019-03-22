@@ -34,7 +34,7 @@
                 android:id="@+id/showTitleIDDets"
                 android:paddingLeft="5dp"
                 android:textSize="15sp"
-                android:textStyle="bold"
+                style="@style/TextAppearance.AppCompat.Subhead"
                 android:text="TV Show Title"
                 android:layout_toRightOf="@id/showImageIDDets"
                 android:layout_width="wrap_content"
